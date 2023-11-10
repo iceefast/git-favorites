@@ -1,7 +1,24 @@
+export class GithubUser {
+  static async search(username) {
+    const endpoint = `https://api.github.com/users/${username}`;
+
+    const data = await fetch(endpoint);
+    const { login, name, public_repos, followers } = await data.json();
+    return {
+      login,
+      name,
+      public_repos,
+      followers,
+    };
+  }
+}
+
 export class Favorites {
   constructor(root) {
     this.root = document.querySelector(root);
     this.load();
+
+    GithubUser.search("iceefast").then((user) => console.log(user));
   }
   load() {
     this.entries = JSON.parse(localStorage.getItem("@github-favorites:")) || [];
