@@ -25,7 +25,18 @@ export class Favorites {
   }
 
   async add(username) {
-    const user = await GithubUser.search(username);
+    try {
+      const user = await GithubUser.search(username);
+
+      if (user.login === undefined) {
+        throw new Error("usuario indefinido");
+      }
+      this.entries = [user, ...this.entries];
+      this.update();
+    } catch (e) {
+      alert(e.message);
+    }
+
     console.log(user);
   }
 
